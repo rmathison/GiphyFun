@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Favorite Movies</title>
+  <style type="text/css">
+    button,
+    div,
+    form,
+    input {
+      margin: 10px;
+    }
+ul {
+
+  float: left;
+  margin: 10px;
+    }
+  </style>
+
+
+</head>
+<body>
+  <div class="container">
+    <h1>Gif Generator</h1>
+    
+    <div id="buttons-view"></div>
+    <form id="movie-form">
+      <label for="movie-input">Add a Car</label>
+      <input type="text" id="movie-input"><br>
+   
+      <input id="add-movie" type="submit" value="Enter type of car">
+    </form>
+    <ul id="movies-view">
+    </ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+     
+      var movies = ["ferrari", "jaguar ", "aston martin", "bentley"];
+    
+      function displayMovieInfo() {
+        var limit = 10;
+        var movie = $(this).attr("data-name");
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + movie +"+car" + "&api_key=dc6zaTOxFJmzC&limit=" + limit;
+
+      
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).done(function(response) {
+          
+          var results = response.data;
+          
+          for (var i = 0; i < results.length; i++) {
+           
+
+            if (results[i].rating !== "r" && results[i].rating !== "pg-13") {
+             
+              var gifDiv = $("<ul class='item'>");
+              
+              var rating = results[i].rating;
+              
+              var p = $("<p>").text("Rating: " + rating);
+              
+              var personImage = $("<img id='gif'>");
+            
+              var move = results[i].images.fixed_height.url;
+
+              var still = results[i].images.fixed_height_still.url;
+              
+              personImage.attr("src", move);
+           
+              gifDiv.append(p);
+              gifDiv.append(personImage);
+            
+
+              $("#movies-view").prepend(gifDiv);
+              //onclick function to stop and start gif, currently not working as planned
+             $("#gif").on("click", function() {
+             
+                
+          if ($(this).attr("src") === move)
+               {
+               $(this).attr("src", still);  
+               }
+                 else {
+               $(this).attr("src", move);
+                 }
+
+        });
+
+           }
+    
+          }
+              
+        });
+
+      }
+     
+      function renderButtons() {
+  
+        $("#buttons-view").empty();
+        
+        for (var i = 0; i < movies.length; i++) {
+      
+          var a = $("<button>");
+          
+          a.addClass("movie");
+          
+          a.attr("data-name", movies[i]);
+          
+          a.text(movies[i]);
+        
+          $("#buttons-view").append(a);
+        }
+      }
+      
+      $("#add-movie").on("click", function(event) {
+        event.preventDefault();
+       
+        var movie = $("#movie-input").val().trim();
+       
+        movies.push(movie);
+        
+        renderButtons();
+      });
+      
+     
+     
+      $(document).on("click", ".movie", displayMovieInfo);
+      
+      renderButtons();
+
+   
+    
+      
+
+    </script>
+  </div>
+</body>
+</html>
