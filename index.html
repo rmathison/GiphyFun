@@ -170,8 +170,14 @@
       $("#add-car").on("click", function(event) {
         event.preventDefault();
 
+
+
        
         var car = $("#car-input").val().trim();
+        //does not create button if nothing is entered in car-input.
+        if(car === "") {
+          return false
+        }
        // Puts the form submission value into the array cars.
         cars.push(car);
         console.log(cars);
