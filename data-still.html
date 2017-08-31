@@ -10,19 +10,6 @@
     input {
       margin: 10px;
     }
-    body {
-      background-image: url("road.jpg");
-    }
-    h1,
-    label,
-    #p1
-     {
-      color: white;
-      text-shadow: 2px 2px black;
-    }
-    #gif {
-      border: 4px solid black;
-    }
 .item {
 
   float: left;
@@ -59,7 +46,7 @@
 
         var limit = 10;
         var car = $(this).attr("data-name");
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + car +"+car" + "&api_key=7b789df673534e9fbae4357c75e2c704&limit=" + limit;
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + car +"+car" + "&api_key=dc6zaTOxFJmzC&limit=" + limit;
 
       //use ajax to access giphyAPI
         $.ajax({
@@ -84,7 +71,7 @@
 
               //var that creates <p> that will later be appended to gifDiv that shows rating for gifs.
               
-              var p = $("<p id='p1'>").text("Rating: " + rating);
+              var p = $("<p>").text("Rating: " + rating);
 
               // var that displays gif in <img> that will later be appended to gifDiv.
               
