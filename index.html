@@ -39,12 +39,14 @@
     <div id="buttons-view"></div>
     <form id="car-form">
       <label for="car-input">Add a Car</label>
-      <input type="text" id="car-input"><br>
+      <input type="text" id="car-input" value=""><br>
    
-      <input id="add-car" type="submit" value="Enter type of car">
+      <input id="add-car" type="submit" value="Add Car Button">
     </form>
     <ul id="cars-view">
     </ul>
+
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
 
@@ -167,6 +169,7 @@
           //when the add car submit button is hit
       $("#add-car").on("click", function(event) {
         event.preventDefault();
+
        
         var car = $("#car-input").val().trim();
        // Puts the form submission value into the array cars.
@@ -174,7 +177,7 @@
         console.log(cars);
 
         //allows the newly created buttons to be created upon submission
-        
+        $("#car-input").val("");
         renderButtons();
       });
 
@@ -187,7 +190,7 @@
       
       renderButtons();
 
-   
+      
     
       
 
