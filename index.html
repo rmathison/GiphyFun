@@ -1,206 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <title>GiphyFun</title>
-  <style type="text/css">
+    <meta charset="utf-8">
+    <title>GiphyFun</title>
+    <style type="text/css">
     button,
     div,
     form,
     input {
-      margin: 10px;
+        margin: 10px;
     }
+
     body {
-      background-image: url("road.jpg");
+        background-image: url("road.jpg");
     }
+
     h1,
     label,
-    #p1
-     {
-      color: white;
-      text-shadow: 2px 2px black;
+    #p1 {
+        color: white;
+        text-shadow: 2px 2px black;
     }
+
     #gif {
-      border: 4px solid black;
+        border: 4px solid black;
     }
-.item {
 
-  float: left;
-  margin: 10px;
+    .item {
+
+        float: left;
+        margin: 10px;
     }
-  </style>
-
-
+    </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Gif Generator</h1>
-    
-    <div id="buttons-view"></div>
-    <form id="car-form">
-      <label for="car-input">Add a Car</label>
-      <input type="text" id="car-input" value=""><br>
-   
-      <input id="add-car" type="submit" value="Add Car Button">
-    </form>
-    <ul id="cars-view">
-    </ul>
 
+<body>
+    <div class="container">
+        <h1>Gif Generator</h1>
+        <div id="buttons-view"></div>
+        <form id="car-form">
+            <label for="car-input">Add a Car</label>
+            <input type="text" id="car-input" value="">
+            <br>
+            <input id="add-car" type="submit" value="Add Car Button">
+        </form>
+        <ul id="cars-view">
+        </ul>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
-
     //intial array of cars thaty will display as buttons
-     
-      var cars = ["ferrari", "jaguar ", "aston martin", "bentley"];
 
-      //function that deals with displaying gifs from giphyAPI using ajax.
-    
-      function displayCarInfo() {
+    var cars = ["ferrari", "jaguar ", "aston martin", "bentley"];
+
+    //function that deals with displaying gifs from giphyAPI using ajax.
+
+    function displayCarInfo() {
         //create variable for url and variable called car to represent information entered in the middle of the url that will be the search term for what gifs are generated.// Also add "+car" as string after var car to ensure that whatever the person searches will be related to cars.
 
         var limit = 10;
         var car = $(this).attr("data-name");
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + car +"+car" + "&api_key=7b789df673534e9fbae4357c75e2c704&limit=" + limit;
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + car + "+car" + "&api_key=7b789df673534e9fbae4357c75e2c704&limit=" + limit;
 
-      //use ajax to access giphyAPI
+        //use ajax to access giphyAPI
         $.ajax({
-          url: queryURL,
-          method: "GET"
+            url: queryURL,
+            method: "GET"
         }).done(function(response) {
-          $("#cars-view").empty();
-          var results = response.data;
+            $("#cars-view").empty();
+            var results = response.data;
 
-                //loops through length of response.data and does the following actions for each item in loop.
-          
-          for (var i = 0; i < results.length; i++) {
+            //loops through length of response.data and does the following actions for each item in loop.
 
-                     
+            for (var i = 0; i < results.length; i++) {
+
+
                 // create div that will hold gifs and be prepended to the html in #cars-view.
-                
-              var gifDiv = $("<div class='item'>");
 
-              // create var that gives a rating for each gif as it is displayed;
-              
-              var rating = results[i].rating;
+                var gifDiv = $("<div class='item'>");
 
-              //var that creates <p> that will later be appended to gifDiv that shows rating for gifs.
-              
-              var p = $("<p id='p1'>").text("Rating: " + rating);
+                // create var that gives a rating for each gif as it is displayed;
 
-              // var that displays gif in <img> that will later be appended to gifDiv.
-              
-              var personImage = $("<img id='gif'>");
+                var rating = results[i].rating;
 
-              //create variables for the still and animated url to use later.
-             
-              var move = results[i].images.fixed_height.url;
+                //var that creates <p> that will later be appended to gifDiv that shows rating for gifs.
 
-              var still = results[i].images.fixed_height_still.url;
+                var p = $("<p id='p1'>").text("Rating: " + rating);
 
-              //Add attributes in order to use for click function that stops ands starts gifs. Also add src to gif as it is first displayed before click.
-              
-              personImage.attr("src", move);
-              personImage.attr("data-animate", move);
-              personImage.attr("data-still", still);
-              personImage.attr("data-state", "animate");
+                // var that displays gif in <img> that will later be appended to gifDiv.
 
-             //append var p to var gifDiv then append var personImage to var gifDiv;
-           
-              gifDiv.append(p);
-              gifDiv.append(personImage);
-                
-              $("#cars-view").prepend(gifDiv)
-             
-              //onclick function to stop and start gif - works with an 'id', not a 'class'.
+                var personImage = $("<img id='gif'>");
 
-              $("#gif").on("click", function() {
-               var state = $(this).attr("data-state");
-            
+                //create variables for the still and animated url to use later.
 
-                if (state === "animate") {
-                  $(this).attr("src", $(this).attr("data-still"));
-                  $(this).attr("data-state","still");
-                } else {
-                  $(this).attr("src", $(this).attr("data-animate"));
-                  $(this).attr("data-state", "animate");
-                }
+                var move = results[i].images.fixed_height.url;
+
+                var still = results[i].images.fixed_height_still.url;
+
+                //Add attributes in order to use for click function that stops ands starts gifs. Also add src to gif as it is first displayed before click.
+
+                personImage.attr("src", move);
+                personImage.attr("data-animate", move);
+                personImage.attr("data-still", still);
+                personImage.attr("data-state", "animate");
+
+                //append var p to var gifDiv then append var personImage to var gifDiv;
+
+                gifDiv.append(p);
+                gifDiv.append(personImage);
+
+                $("#cars-view").prepend(gifDiv)
+
+                //onclick function to stop and start gif - works with an 'id', not a 'class'.
+
+                $("#gif").on("click", function() {
+                    var state = $(this).attr("data-state");
+
+
+                    if (state === "animate") {
+                        $(this).attr("src", $(this).attr("data-still"));
+                        $(this).attr("data-state", "still");
+                    } else {
+                        $(this).attr("src", $(this).attr("data-animate"));
+                        $(this).attr("data-state", "animate");
+                    }
 
                 });
 
-           
-    
-          }
-              
+
+
+            }
+
         });
 
-      }
-     // create function that generates buttons for array of cars.
-      function renderButtons() {
+    }
+    // create function that generates buttons for array of cars.
+    function renderButtons() {
 
         //empty html area #buttons-view upon start of function
-  
+
         $("#buttons-view").empty();
 
         //loops through car array creating a button for each car.
-        
+
         for (var i = 0; i < cars.length; i++) {
-      
-          var a = $("<button>");
 
-          //give each button a class.
-          
-          a.addClass("car");
+            var a = $("<button>");
 
-          //give buttons their individual name as it loops through the array.
-          
-          a.attr("data-name", cars[i]);
+            //give each button a class.
 
-          //Enters name as text into the button;
-          
-          a.text(cars[i]);
+            a.addClass("car");
 
-          //places the newly created buttons into the buttons-view area.
-        
-          $("#buttons-view").append(a);
+            //give buttons their individual name as it loops through the array.
+
+            a.attr("data-name", cars[i]);
+
+            //Enters name as text into the button;
+
+            a.text(cars[i]);
+
+            //places the newly created buttons into the buttons-view area.
+
+            $("#buttons-view").append(a);
         }
-      }
-      
-          //when the add car submit button is hit
-      $("#add-car").on("click", function(event) {
+    }
+
+    //when the add car submit button is hit
+    $("#add-car").on("click", function(event) {
         event.preventDefault();
 
 
 
-       
+
         var car = $("#car-input").val().trim();
         //does not create button if nothing is entered in car-input.
-        if(car === "") {
-          return false
+        if (car === "") {
+            return false
         }
-       // Puts the form submission value into the array cars.
+        // Puts the form submission value into the array cars.
         cars.push(car);
         console.log(cars);
 
         //allows the newly created buttons to be created upon submission
         $("#car-input").val("");
         renderButtons();
-      });
+    });
 
-     
-       
-       //when button is pressed with class of car it will display the info for that car. 
 
-      $(document).on("click", ".car", displayCarInfo);
 
-      
-      renderButtons();
+    //when button is pressed with class of car it will display the info for that car. 
 
-      
-    
-      
+    $(document).on("click", ".car", displayCarInfo);
 
+
+    renderButtons();
     </script>
-  </div>
+    </div>
 </body>
+
 </html>
